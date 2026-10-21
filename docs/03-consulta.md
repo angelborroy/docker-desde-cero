@@ -48,6 +48,7 @@ docker compose down
 | Error de permisos con un bind mount | Revisa usuario y permisos de la carpeta del equipo. Evita resolverlo ejecutando todo como root. |
 | Image not found o límite de descargas | Revisa etiqueta, conexión y respuesta del registro. Descarga antes de clase. |
 | No matching manifest | Comprueba arquitectura y etiqueta. No fuerces amd64 en ARM como primera solución. |
+| Disco lleno o Docker Desktop lento | Revisa `docker system df`. Elimina imágenes con `docker image rm` y la caché con `docker builder prune`. `docker system prune -a --volumes` borra también los volúmenes con datos. |
 | Modelo IA no arranca | Revisa requisitos de Model Runner; no es un problema del laboratorio básico. |
 
 ## Rutas de bind mounts

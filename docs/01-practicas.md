@@ -366,12 +366,14 @@ docker run -d --network wordpress --name wp -p 127.0.0.1:8080:80 \
 
 * Abre [compose.yaml](../compose.yaml) en la raíz del repositorio
   * Identifica servicios, red, volumen, `healthcheck` y `depends_on`
+  * `build:` construye la imagen desde una carpeta; `image:` la descarga de un registro
 * Arranca el proyecto y espera a que esté sano
 * Crea una tarea en http://localhost:8080
 * Para y elimina el proyecto **sin** borrar el volumen, arráncalo de nuevo y comprueba la tarea
 * Extra: cambia el puerto a 8081 usando un fichero `.env`, sin editar `compose.yaml`
 
-> Pista: copia `.env.example` a `.env`
+> Pista: `cp .env.example .env` (en PowerShell, `Copy-Item .env.example .env`) y
+> cambia el puerto a 8081
 
 [Solución y limpieza](02-soluciones.md#práctica-19)
 
@@ -383,6 +385,7 @@ El fichero `examples/compose.failure.yaml` introduce un error de configuración
 docker compose -f compose.yaml -f examples/compose.failure.yaml up -d
 ```
 
+* Espera unos 15 segundos: al principio `app` aparece como `health: starting`
 * Diagnostica el problema con `docker compose ps -a` y `docker compose logs app`
 * Usa `config` con los mismos dos argumentos `-f` para encontrar la causa
 * Recupera el servicio **sin borrar los datos**

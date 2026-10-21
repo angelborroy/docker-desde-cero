@@ -17,6 +17,8 @@ IDE para realizar las prácticas.
 Sigue la [instalación oficial](https://docs.docker.com/get-started/get-docker/).
 En Windows, no cambies entre PowerShell y WSL a mitad de un ejercicio con rutas.
 Si utilizas WSL, guarda el proyecto en su sistema de archivos Linux.
+Con el backend WSL 2, la memoria y las CPU de Docker se configuran en
+`%UserProfile%\.wslconfig`, no en *Settings* de Docker Desktop.
 Usa una carpeta local sencilla, fuera de carpetas sincronizadas.
 
 En Mac con Apple Silicon puedes elegir la máquina virtual en *Settings > General >
