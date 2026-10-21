@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docker Tasks</title>
+<style>
+  body { margin: 3rem auto; padding: 0 1rem; max-width: 42rem; font: 18px system-ui; color: #15263d; background: #f3f6fa; }
+  h1 { color: #005c97; } form, li { display: flex; gap: .6rem; margin: 1rem 0; align-items: center; }
+  input[type=text] { flex: 1; min-width: 0; padding: .8rem; } button { cursor: pointer; padding: .7rem; }
+  ul { padding: 0; } li { background: white; padding: .8rem; border-radius: 8px; } li span { flex: 1; }
+  #status { min-height: 1.5rem; } .done { text-decoration: line-through; color: #626f7c; }
+</style>
+<h1>Docker Tasks</h1>
+<p>One application, multiple containers. Create a task and find out where it lives.</p>
+<form id="form">
+  <input id="name" type="text" aria-label="New task" placeholder="New task" required maxlength="255">
+  <button>Add</button>
+</form>
+<p id="status" role="status"></p>
+<ul id="items"></ul>
+<script>
+const status = document.querySelector('#status');
+async function request(path, options) {
+  const response = await fetch(path, options);
+  if (!response.ok) throw new Error('HTTP response ' + response.status);
+  return response.headers.get('content-type')?.includes('application/json')
+    ? response.json() : response.text();
+}
+async function show() {
+  const items = await request('/items');
+  document.querySelector('#items').replaceChildren(...items.map(item => {
+    const li = document.createElement('li');
+    const check = document.createElement('input');
+    check.type = 'checkbox'; check.checked = item.completed;
+    check.setAttribute('aria-label', 'Complete ' + item.name);
+    const text = document.createElement('span'); text.textContent = item.name;
+    if (item.completed) text.className = 'done';
+    check.onchange = () => act(() => request('/items/' + item.id, {
+      method: 'PUT', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name: item.name, completed: check.checked})
+    }));
+    const remove = document.createElement('button'); remove.textContent = 'Delete';
+    remove.onclick = () => act(() => request('/items/' + item.id, {method: 'DELETE'}));
+    li.append(check, text, remove); return li;
+  }));
+  status.textContent = items.length + ' saved tasks';
+}
+async function act(fn) {
+  try { await fn(); await show(); } catch (error) { status.textContent = error.message; }
+}
+document.querySelector('#form').onsubmit = event => {
+  event.preventDefault(); const input = document.querySelector('#name');
+  const name = input.value.trim(); if (!name) return;
+  act(async () => {
+    await request('/items', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({name})});
+    input.value = '';
+  });
+};
+act(async () => {});
+</script>
+</html>

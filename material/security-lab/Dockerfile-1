@@ -1,0 +1,31 @@
+# syntax=docker/dockerfile:1
+
+# WARNING: this image is intentionally insecure. It is the target of a hands-on
+# security lab. It runs as root, keeps a setuid /bin/bash (a privilege escalation
+# path) and stores secret "flag" files inside the image. Never use any of these
+# patterns in a real image.
+
+# Build stage: compiles the app so students do not need Java or Maven installed.
+FROM maven:3.10.0-eclipse-temurin-21-noble AS build
+WORKDIR /build
+COPY pom.xml ./
+RUN mvn -q -e dependency:go-offline
+COPY src ./src
+RUN mvn -q -e clean package -DskipTests
+
+# Runtime stage (insecure on purpose)
+FROM eclipse-temurin:21.0.12.1_1-jre-noble
+
+# Install extra tools and give /bin/bash the setuid bit, so a shell spawned
+# through the app can escalate to root with "bash -p".
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends coreutils netcat-traditional && \
+    rm -rf /var/lib/apt/lists/* && \
+    chmod u+s /bin/bash
+
+COPY --from=build /build/target/cybersecurity-1.0.0.jar app.jar
+COPY flags/user.txt /home/factor/user.txt
+COPY flags/root.txt /root/root.txt
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]

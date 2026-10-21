@@ -1,0 +1,6 @@
+{
+  "model": "ai/smollm2:360M-Q4_K_M",
+  "messages": [
+    {"role": "user", "content": "What is the difference between a Docker image and a container?"}
+  ]
+}

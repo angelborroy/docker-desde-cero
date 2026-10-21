@@ -1,0 +1,35 @@
+# Standalone solution to practice 18. Credentials are public classroom examples.
+name: training-wordpress
+services:
+  db:
+    image: mysql:9.7.2
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: manager
+      MYSQL_PASSWORD: classroom-only
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u manager -D wordpress -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+  wordpress:
+    image: wordpress:7.1.3-apache
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: manager
+      WORDPRESS_DB_PASSWORD: classroom-only
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - wordpress-data:/var/www/html
+volumes:
+  mysql-data:
+  wordpress-data:

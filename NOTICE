@@ -1,0 +1,17 @@
+Docker desde cero y novedades del ecosistema
+Copyright 2026 Angel Borroy
+
+Licensed under the Apache License, Version 2.0 (see LICENSE), except for the
+third-party content listed below.
+
+Third-party code
+- material/database-initialization, material/dev-express, material/first-build,
+  material/multi-stage-react-app, material/nonroot-node-app and
+  material/simple-python-webapp are derived from
+  https://github.com/mikesir87/dockercon23-workshop-materials
+  Copyright 2023 Michael Irwin. Apache License 2.0
+  (see LICENSES/Apache-2.0-dockercon23-workshop.txt). The changes are listed
+  in FUENTES.md.
+- app/src is derived from https://github.com/docker/getting-started-app
+  Copyright Docker, Inc. and contributors. MIT License, as declared in its
+  package.json.

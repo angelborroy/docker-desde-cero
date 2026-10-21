@@ -1,0 +1,5 @@
+services:
+  diagnostics:
+    image: node:24.22.0-trixie-slim
+    profiles: [tools]
+    command: ["node", "-e", "require('dns').lookup('db', (e,a)=>{if(e)throw e; console.log('db = '+a)})"]
