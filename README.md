@@ -1,4 +1,4 @@
-# Docker desde cero y novedades del ecosistema
+# Docker práctico: de cero a despliegue seguro
 
 Material del curso: guías, prácticas, ejemplos, comandos y soluciones.
 No necesitas programar la aplicación. Necesitas Docker funcionando, una terminal
