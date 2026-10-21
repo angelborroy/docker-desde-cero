@@ -19,6 +19,13 @@ En Windows, no cambies entre PowerShell y WSL a mitad de un ejercicio con rutas.
 Si utilizas WSL, guarda el proyecto en su sistema de archivos Linux.
 Usa una carpeta local sencilla, fuera de carpetas sincronizadas.
 
+En Mac con Apple Silicon puedes elegir la máquina virtual en *Settings > General >
+Virtual Machine Manager*: [Docker VMM](https://docs.docker.com/desktop/features/vmm/)
+o Apple Virtualization framework. Las dos sirven para el curso. Docker VMM arranca
+más rápido, pero no admite Rosetta, así que emular imágenes `amd64` es más lento.
+Si un *bind mount* falla con "file is not shared from the host", añade la carpeta
+en *Settings > Resources > File sharing*.
+
 En Linux, verifica que tu usuario puede conectar con el motor. La pertenencia al
 grupo `docker` concede privilegios elevados sobre ese equipo; consulta las
 [opciones de instalación](https://docs.docker.com/engine/install/linux-postinstall/)
