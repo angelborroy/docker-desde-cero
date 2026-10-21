@@ -104,7 +104,7 @@ docker rm -f training-limits
 
 Los límites controlan recursos. Una política de reinicio reacciona a la salida
 del proceso. Un healthcheck evalúa disponibilidad: marcar `unhealthy` no reinicia
-por si solo un contenedor. `depends_on` no es un supervisor permanente.
+por sí solo un contenedor. `depends_on` no es un supervisor permanente.
 
 ## Scout y SBOM
 

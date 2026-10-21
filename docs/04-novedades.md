@@ -220,7 +220,7 @@ su alcance antes de cambiarla. [Guía local y limpieza](https://docs.docker.com/
 
 ## Si no puedes ejecutar IA en tu equipo
 
-Sigue los ejemplos y lee las configuraciones. Explica que pieza realiza cada
+Sigue los ejemplos y lee las configuraciones. Explica qué pieza realiza cada
 tarea: almacenar un modelo, generar texto, invocar una herramienta o aislar un
 entorno. Esta distinción es el objetivo del bloque; disponer de hardware para
 inferencia no es un requisito del seminario.

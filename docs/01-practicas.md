@@ -78,11 +78,12 @@ Continúa con [ampliaciones](05-ampliaciones.md) y el bloque separado de
 ## Práctica 2
 
 * Ejecuta un contenedor con las siguientes premisas:
-  * El contenedor se llama `nginx`
+  * El contenedor se llama `nginx` y se ejecuta en *background*
   * El contenedor usa la imagen `nginx:1.30.6-alpine`
-  * El contenedor expone su puerto 80 al puerto 8080 de la máquina local
+  * El contenedor publica su puerto 80 en el puerto 8080 de la máquina local
 
 * Ejecuta un contenedor con las siguientes premisas:
+  * El contenedor se llama `practice-db` y se ejecuta en *background*
   * El contenedor tiene una etiqueta con clave `app` y valor `mysql`
   * El contenedor usa la imagen `mysql:9.7.2`
   * El contenedor está configurado para usar la clave de root `secret`
@@ -95,9 +96,10 @@ Continúa con [ampliaciones](05-ampliaciones.md) y el bloque separado de
 ## Práctica 3
 
 * Ejecuta un contenedor con las siguientes premisas:
+  * El contenedor se llama `cats` y se ejecuta en *background*
   * El contenedor tiene una etiqueta con clave `app` y valor `cats`
   * El contenedor usa la imagen `mikesir87/cats:1.0`
-  * El contenedor expone su puerto 5000 en el puerto local 5050
+  * El contenedor publica su puerto 5000 en el puerto local 5050
   * El contenedor tiene un `healthcheck` que usa `curl` para validar que la aplicación está funcionando cada 5 segundos
 
 > Pista: [docker run](https://docs.docker.com/reference/cli/docker/container/run/) incluye las opciones `--health-cmd` y `--health-interval`
@@ -127,6 +129,7 @@ Continúa con [ampliaciones](05-ampliaciones.md) y el bloque separado de
 
 * Ejecuta un contenedor con las siguientes premisas:
   * El contenedor usa la imagen `mysql:9.7.2`
+  * El contenedor se llama `persistent-db` y se ejecuta en *background*
   * El contenedor tiene una etiqueta de clave `app` y valor `persistent-db`
   * La contraseña de root es `root` (variable de entorno `MYSQL_ROOT_PASSWORD`)
   * Los ficheros de la base de datos (en la ruta del contenedor `/var/lib/mysql`) se almacenan en el volumen `database-files`
@@ -143,7 +146,7 @@ Continúa con [ampliaciones](05-ampliaciones.md) y el bloque separado de
   * Especifica un *bind mount* que comparte la carpeta `material/database-initialization` con el contenedor en `/docker-entrypoint-initdb.d`
   * Establece la variable de entorno `MYSQL_DATABASE` al valor `workshop`
   * Establece la variable de entorno `MYSQL_ROOT_PASSWORD` al valor `secret`
-* Espera a que termine la inicialización y consulta `users`
+* Espera a que termine la inicialización y consulta la tabla `users` de `workshop`
 * Los scripts solo se ejecutan si el directorio de datos está vacío
 
 > La carpeta [database-initialization](../material/database-initialization/README.md) está disponible en el material del curso
@@ -158,7 +161,7 @@ Continúa con [ampliaciones](05-ampliaciones.md) y el bloque separado de
   * El contenedor especifica un *bind mount* que conecta la carpeta `material/dev-express` con la carpeta del contenedor `/app`
   * Establece el directorio de trabajo de la aplicación a `/app`
   * Expone el puerto del contenedor 3000 al puerto local 3000
-  * Sobreescribe el comando por defecto a `npm run dev`
+  * Sobrescribe el comando por defecto a `npm run dev`
 
 > Pista: [docker run](https://docs.docker.com/reference/cli/docker/container/run/) incluye la opción `--workdir`
 
@@ -169,6 +172,10 @@ Abre http://localhost:3000/api/message
 ¿Qué ocurre si cambias el mensaje que aparece en `material/dev-express/src/index.js` sin parar el contenedor?
 
 ¿Y si haces el mismo cambio en una imagen ya construida?
+
+> En Windows, la recarga solo funciona si el curso está en el sistema de ficheros
+> de WSL (por ejemplo `~/curso` en Ubuntu), no en `C:\`. Si no se recarga, para el
+> contenedor con Ctrl+C y arráncalo de nuevo.
 
 [Solución y limpieza](02-soluciones.md#práctica-7)
 
@@ -234,7 +241,7 @@ Al terminar, libera el puerto 8080 con `docker rm -f training-app`. Conserva el 
   * Copia los ficheros construidos en la primera etapa (`/usr/local/app/dist`) a `/usr/share/nginx/html`
   * Construye la imagen con el nombre `multi-stage-react-app`
   * Ejecuta el contenedor y accede a la aplicación por el puerto local `8080`
-* Compara el tamaño de la imagen con el de `node:24.22.0-alpine` usando `docker image ls`
+* Compara el tamaño de la imagen con el de `node:24.22.0-alpine` usando `docker image ls` (columna `DISK USAGE` en Docker Desktop)
 
 [Solución y limpieza](02-soluciones.md#práctica-12)
 
@@ -288,9 +295,9 @@ y el puerto local 8080, como en la práctica 8, antes de modificar el archivo.
 
 * Ejecuta un contenedor con las siguientes premisas:
   * El contenedor usa la imagen `wordpress:7.1.3-apache`
-  * El contenedor expone el puerto 80 al puerto 8080 local
+  * El contenedor publica su puerto 80 en el puerto 8080 local
   * El contenedor está conectado a la red `wordpress`
-  * El contenedor está conectado a la base de datos `mysql` creada previamente con el usuario `manager`
+  * El contenedor usa la base de datos `wordpress` del contenedor MySQL anterior, con el usuario `manager`
 * Abre http://localhost:8080 y completa la instalación
 
 > Pista: https://hub.docker.com/_/wordpress
@@ -345,7 +352,9 @@ docker run -d --network wordpress --name wp -p 127.0.0.1:8080:80 \
 * Añade un `healthcheck` SQL a `db` y usa `condition: service_healthy`
 * Para probarlos manualmente: crea antes la red `wordpress` y espera a MySQL. No los ejecutes junto con Compose
 
-> Pista: https://www.composerize.com convierte comandos `docker run` en Compose
+> Pista: https://www.composerize.com convierte `docker run` en Compose. Para el
+> `healthcheck`, adapta el de `db` en `compose.yaml` (`CMD-SHELL` y `SELECT 1`).
+> En Compose, `$$` escribe un `$` literal.
 
 * ¿Por qué no necesitas `--network-alias db` en Compose?
 * ¿Qué ocurre con los datos tras `docker compose down`? ¿Y tras `docker compose down -v`?

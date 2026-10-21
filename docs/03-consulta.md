@@ -18,7 +18,7 @@ docker compose exec app node -e "require('dns').lookup('db', console.log)"
 docker compose exec app node -e "fetch('http://localhost:3000/items').then(r=>r.json()).then(console.log)"
 ```
 
-`context` selecciona a que motor hablas. No cambies a un contexto remoto para
+`context` selecciona a qué motor hablas. No cambies a un contexto remoto para
 seguir un ejercicio local sin comprobar antes dónde se crearán sus recursos.
 
 Cambios y limpieza:
