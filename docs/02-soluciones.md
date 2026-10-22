@@ -468,15 +468,9 @@ otro caso las aportaría MCP. Docker Sandboxes aislaría el entorno del agente.
 
 ## Limpieza final
 
-Para continuar otro día, basta con `docker compose down`.
-Solo cuando quieras borrar los datos de los ejercicios:
-
-```sh
-docker compose down -v
-docker volume rm training-sqlite training-mysql
-```
-Si un volumen no existe porque saltaste un ejercicio, Docker lo indicará.
-No uses `docker system prune` para limpiar un curso en un equipo compartido.
+Sigue la [limpieza final de la guía de prácticas](01-practicas.md#limpieza-final).
+Cada enunciado indica también qué recursos eliminar y cuáles conservar antes de
+continuar; no necesitas abrir las soluciones para consultar la limpieza.
 
 ## Comprobación final
 

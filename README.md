@@ -12,6 +12,9 @@ al tiempo disponible, sin un calendario fijo.
 
 1. Completa la [comprobación previa](docs/00-preparacion.md).
 2. Sigue los enunciados de la [guía de prácticas](docs/01-practicas.md).
+   Cada práctica incluye requisitos, comprobación del resultado y limpieza.
+   Mantén el índice abierto: lee en GitHub y ejecuta los ejercicios en tu copia
+   local del repositorio, con el editor y la terminal.
 3. Consulta las [soluciones](docs/02-soluciones.md) para comprobar tus resultados.
    Ambas guías usan la misma numeración, del 1 al 23. Las prácticas marcadas
    "(opcional)" permiten ampliar el recorrido.
