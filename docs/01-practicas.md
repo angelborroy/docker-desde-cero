@@ -479,12 +479,12 @@ docker exec -e MYSQL_PWD=classroom-only training-db mysql -u tasks -D tasks -e "
 ```bash
 docker run -d --network wordpress --name wp-db -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=wordpress \
   -e MYSQL_USER=manager -e MYSQL_PASSWORD=secret \
-  -v mysql-data:/var/lib/mysql --network-alias db mysql:9.7.2
+  -v wp-mysql-data:/var/lib/mysql --network-alias db mysql:9.7.2
 
 docker run -d --network wordpress --name wp -p 127.0.0.1:8080:80 \
   -e WORDPRESS_DB_HOST=db -e WORDPRESS_DB_NAME=wordpress \
   -e WORDPRESS_DB_USER=manager -e WORDPRESS_DB_PASSWORD=secret \
-  -v wordpress-data:/var/www/html wordpress:7.1.3-apache
+  -v wp-html-data:/var/www/html wordpress:7.1.3-apache
 ```
 
 * Ejecuta Docker Compose y verifica que WordPress funciona en http://localhost:8080
@@ -493,7 +493,7 @@ docker run -d --network wordpress --name wp -p 127.0.0.1:8080:80 \
   En PowerShell, escribe cada comando en una línea, sin `\`.
   Antes de pasar a Compose, elimina esos contenedores con `docker rm -f wp wp-db`,
   la red con `docker network rm wordpress` y sus volúmenes de prueba con
-  `docker volume rm mysql-data wordpress-data`. No los ejecutes junto con Compose
+  `docker volume rm wp-mysql-data wp-html-data`. No los ejecutes junto con Compose
 
 > Pista: https://www.composerize.com convierte `docker run` en Compose. Para el
 > `healthcheck`, adapta el de `db` en `compose.yaml` (`CMD-SHELL` y `SELECT 1`).
